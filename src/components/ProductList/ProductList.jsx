@@ -38,7 +38,7 @@ const ProductList = () => {
       },
       body: JSON.stringify(data)
     })
-  }, [country, street, entity])
+  }, [])
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData)
