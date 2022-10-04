@@ -10,6 +10,22 @@ const Form = () => {
     const [entity, setEntity] = useState('physical')
     const { tg } = useTelegram();
 
+    const onSendData = useCallback(() => {
+        const data = {
+            country,
+            street,
+            entity
+        }
+        tg.sendData(JSON.stringify(data))
+    }, [country, street, entity])
+
+    useEffect(() => {
+        tg.WebApp.onEvent('mainButtonClicked', onSendData)
+        return () => {
+            tg.WebApp.offEvent('mainButtonClicked', onSendData)
+        }
+    }, [onSendData])
+
     useEffect(() => {
         tg.MainButton.setParams({
             text: 'Send data'
@@ -17,12 +33,12 @@ const Form = () => {
     }, [])
 
     useEffect(() => {
-        if(!street || !country){
+        if (!street || !country) {
             tg.MainButton.hide()
-        } else{
+        } else {
             tg.MainButton.show()
         }
-    }, [country,street]);
+    }, [country, street]);
 
 
     const onChangeCountry = e => {
